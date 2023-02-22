@@ -1,0 +1,27 @@
+puppet forge
+
+  https://forge.puppet.com/
+
+puppet type docs
+
+  https://www.puppet.com/docs/puppet/7/type.html
+
+puppet roles and profiles
+
+  https://puppet.com/docs/pe/2019.8/osp/the_roles_and_profiles_method.html 
+
+git submodule
+
+  https://git-scm.com/book/en/v2/Git-Tools-Submodules
+
+The Puppet language style guide
+
+  https://www.puppet.com/docs/puppet/7/style_guide.html
+
+overcommit is a tool to manage and configure Git hooks
+
+  https://github.com/sds/overcommit
+
+Overcommit git hooks: puppet validate
+
+  https://caiustheory.com/overcommit-git-hooks-puppet-validate/
