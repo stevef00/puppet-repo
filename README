@@ -1,3 +1,25 @@
+The repo contains submodules. To checkout:
+
+  git clone git@github.com:stevef00/puppet-repo.git
+  cd puppet-repo.git
+  git pull --recurse-submodules
+  git submodule update --init --recursive
+
+Adding a new submodule:
+
+  First, add the submodule:
+
+  - git submodule add URL PATH
+
+    git submodule add https://github.com/gutocarvalho/puppet-puppetagent.git modules/puppetagent
+
+  Then check the staged changes (should be an addition to .gitmodules and the commit reference for the module.
+  If it looks ok, commit and push.
+
+
+POSSIBLY USEFUL LINKS
+-----------------------------------------------------------------------
+
 puppet forge
 
   https://forge.puppet.com/
