@@ -1,0 +1,3 @@
+[submodule "modules/puppetagent"]
+	path = modules/puppetagent
+	url = https://github.com/gutocarvalho/puppet-puppetagent.git
