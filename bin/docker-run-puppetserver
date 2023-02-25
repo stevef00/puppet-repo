@@ -1,0 +1,83 @@
+#!/bin/bash
+
+# run a docker container serving this puppet repo
+
+# TODO
+# * add interactive option
+# * add option to pass in PUPPETSERVER_HOSTNAME
+# * 
+
+function usage {
+  echo "$(basename "$0") CODEDIR [SSLDIR]" 2>&1
+}
+
+CODEDIR="$1"
+if [ -z "$CODEDIR" ]; then
+  usage
+  exit 1
+fi
+
+# The DOCS say:
+#
+#   Persistance
+# 
+#   If you plan to use the in-server CA, restarting the container can
+#   cause the server's keys and certificates to change, causing agents
+#   and the server to stop trusting each other. To prevent this, you
+#   can persist the default cadir, /etc/puppetlabs/puppetserver/ca. For
+#   example, docker run -v $PWD/ca-ssl:/etc/puppetlabs/puppetserver/ca
+#   puppetlabs/puppetserver:latest.
+#
+# But this doesn't seem to work. When the container runs the 2nd time, it fails with:
+# 
+#   System configuration values:
+#   * HOSTNAME: 'puppet'
+#   * hostname -f: 'puppet'
+#   * PUPPETSERVER_HOSTNAME: unset
+#   /docker-entrypoint.d/90-log-config.sh: 13: cd: can't cd to /etc/puppetlabs/puppet/ssl/certs
+#   * PUPPET_MASTERPORT: '8140'
+#   * Certname: ''
+#   * DNS_ALT_NAMES: ''
+#   * SSLDIR: '/etc/puppetlabs/puppet/ssl'
+#   Certificate :
+#   Can't open /etc/puppetlabs/puppet/ssl/certs/ for reading, No such file or directory
+#   140253727216064:error:02001002:system library:fopen:No such file or directory:crypto/bio/bss_file.c:69:fopen('/etc/puppetlabs/puppet/ssl/certs/','r')
+#   140253727216064:error:2006D080:BIO routines:BIO_new_file:no such file:crypto/bio/bss_file.c:76:
+#   unable to load certificate
+#
+# A workaround appears to be to also mount a volume at /etc/puppetlabs/ssl to
+# persist that data as well.
+#
+# To be clear (since I was a bit confused myself). We need both:
+#
+#   /etc/puppetlabs/puppetserver/ssl/ca  # according to docs
+#   /etc/puppetlabs/puppet/ssl           # according to reality
+#
+
+CADIR="${CODEDIR}/cadir"
+[ -d "$CADIR" ] || mkdir -v "$CADIR"
+SSLDIR="${CODEDIR}/ssldir"
+[ -d "$SSLDIR" ] || mkdir -v "$SSLDIR"
+
+# FIXME: add interactive option:
+#docker run \
+#    -it --entrypoint="" \
+#    --rm \
+#    --name puppet \
+#    --hostname puppet \
+#    -v "${CODEDIR}:/etc/puppetlabs/code/environments/production" \
+#    puppet/puppetserver /bin/bash
+
+docker run                                                           \
+    --rm                                                             \
+    --name puppet                                                    \
+    --hostname puppet                                                \
+    -p 8140:8140                                                     \
+    -v "${CODEDIR}:/etc/puppetlabs/code/environments/production:ro"  \
+    -v "${CADIR}:/etc/puppetlabs/puppetserver/ca"                    \
+    -v "${SSLDIR}:/etc/puppetlabs/puppet/ssl"                        \
+    -e USE_PUPPETDB=false                                            \
+    -e PUPPET_REPORTS=none                                           \
+    -e PUPPETSERVER_HOSTNAME=puppet.example.com                      \
+    puppet/puppetserver
+

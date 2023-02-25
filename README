@@ -47,3 +47,8 @@ overcommit is a tool to manage and configure Git hooks
 Overcommit git hooks: puppet validate
 
   https://caiustheory.com/overcommit-git-hooks-puppet-validate/
+
+dockerhub: puppetlabs/puppetserver
+
+  https://hub.docker.com/r/puppet/puppetserver
+
