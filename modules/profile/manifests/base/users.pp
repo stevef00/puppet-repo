@@ -7,6 +7,7 @@ class profile::base::users {
       comment        => 'Steve Feehan',
       uid            => 1000,
       gid            => 1000,
+      groups         => [ 'wheel' ],
       home           => '/home/steve',
       managehome     => true,
       shell          => '/bin/bash',
