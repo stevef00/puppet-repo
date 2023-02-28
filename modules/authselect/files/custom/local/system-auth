@@ -1,6 +1,8 @@
 auth        required                                     pam_env.so
 auth        required                                     pam_faildelay.so delay=2000000
 auth        required                                     pam_faillock.so preauth silent                         {include if "with-faillock"}
+auth        [success=ok default=1]                       pam_succeed_if.so service = sudo                       {include if "with-pam_ssh_agent_auth"}
+auth        sufficient                                   pam_ssh_agent_auth.so file=~/.ssh/authorized_keys      {include if "with-pam_ssh_agent_auth"}
 auth        sufficient                                   pam_unix.so {if not "without-nullok":nullok}
 auth        required                                     pam_faillock.so authfail                               {include if "with-faillock"}
 auth        required                                     pam_deny.so
