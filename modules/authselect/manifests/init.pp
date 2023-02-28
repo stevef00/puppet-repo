@@ -3,7 +3,7 @@ class authselect ($policy='minimal') {
 
   file { "/etc/authselect/${policy}":
     ensure  => directory,
-    source  => "puppet:///modules/auth/authselect/${policy}",
+    source  => "puppet:///modules/authselect/${policy}",
     recurse => true,
     purge   => true,
     force   => true,
