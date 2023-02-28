@@ -1,4 +1,4 @@
 # base auth configuration
 class profile::base::auth {
-  class { 'authselect': policy => 'minimal' }
+  class { 'authselect': policy => 'custom/local' }
 }
