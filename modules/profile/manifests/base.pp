@@ -2,6 +2,7 @@
 # minimal required configuration
 class profile::base {
   include profile::base::auth
+  include profile::base::packages
   include profile::base::users
   include profile::puppet::agent
 }
