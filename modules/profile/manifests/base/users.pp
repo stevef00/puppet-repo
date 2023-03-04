@@ -7,13 +7,19 @@ class profile::base::users {
     default  => fail("${::os[family]} is not supported"),
   }
 
+  group {
+    'docker':
+      gid    => 991,
+      before => Class[docker];
+  }
+
   user {
     'steve':
       ensure         => present,
       comment        => 'Steve Feehan',
       uid            => 1000,
       gid            => 1000,
-      groups         => [ $sudo_group ],
+      groups         => [ $sudo_group, 'docker' ],
       home           => '/home/steve',
       managehome     => true,
       shell          => '/bin/bash',
