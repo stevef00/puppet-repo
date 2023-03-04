@@ -52,3 +52,10 @@ dockerhub: puppetlabs/puppetserver
 
   https://hub.docker.com/r/puppet/puppetserver
 
+puppet-lint
+
+  http://puppet-lint.com/
+
+  Control Comments
+
+    http://puppet-lint.com/controlcomments/
